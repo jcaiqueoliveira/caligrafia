@@ -1,7 +1,6 @@
-import org.gradle.api.tasks.JavaExec
-
 plugins {
     id(libs.plugins.multiplatform.get().pluginId)
+    alias(libs.plugins.compose)
     id(libs.plugins.android.library.get().pluginId)
     alias(libs.plugins.kotlinx.serialization)
 }
@@ -16,7 +15,7 @@ kotlin {
             }
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -35,6 +34,8 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.kotlinx.coroutines.core)
                 implementation(libs.bundles.networking)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
             }
         }
 

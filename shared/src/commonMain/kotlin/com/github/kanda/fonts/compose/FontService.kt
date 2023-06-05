@@ -10,7 +10,8 @@ import kotlinx.serialization.Serializable
 
 internal class FontService(private val client: HttpClient = getKtorClient()) {
 
-    private val store: KStore<ByteArray> = storeOf(filePath = "my-awesome-font.ttf", 0)
+    private val store: KStore<FontCache> =
+        storeOf(filePath = "${CaligrafiaInternals.directory}/my-awesome-font.ttf", 0)
 
     suspend fun listAllFonts(key: String): List<WebFont> {
         val response = client.get("webfonts?key=$key").body<WebFontRaw>()
@@ -21,11 +22,10 @@ internal class FontService(private val client: HttpClient = getKtorClient()) {
         val body = client.get {
             url { set(fileUrl) }
         }.body<ByteArray>()
-
-        store.set(body)
+        val font = FontCache(body)
+        store.set(font)
     }
 }
-
 @Serializable
 internal data class WebFont(
     val family: String,

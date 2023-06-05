@@ -1,8 +1,15 @@
 package com.github.kanda.fonts.compose
 
-object Font {
+import kotlin.native.concurrent.ThreadLocal
 
-    suspend fun init(key: String, vararg fonts: String) {
+@ThreadLocal
+internal object CaligrafiaInternals {
+
+    var directory: String = ""
+    suspend fun init(
+        key: String,
+        vararg fonts: String
+    ) {
         val service = FontService()
         val result = service.listAllFonts(key)
         val font = "work sans"
@@ -11,5 +18,9 @@ object Font {
         val fileToDownload = fontFamily.files["600"]!!
         println(fileToDownload)
         service.download(fileToDownload, fontFamily.family, "600")
+    }
+
+    fun setDir(dir: String) {
+        directory = dir
     }
 }

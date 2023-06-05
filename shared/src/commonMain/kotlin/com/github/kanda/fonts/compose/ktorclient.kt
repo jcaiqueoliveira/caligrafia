@@ -16,7 +16,7 @@ private const val baseUrl = "https://www.googleapis.com/webfonts/v1/"
 
 internal fun getKtorClient(
     base: String = baseUrl
-) = HttpClient {
+) = HttpClient(getKtorEngine()) {
     install(ContentNegotiation) {
         json(createJson())
     }
@@ -24,8 +24,4 @@ internal fun getKtorClient(
     defaultRequest {
         url(base)
     }
-}
-
-fun main() {
-
 }

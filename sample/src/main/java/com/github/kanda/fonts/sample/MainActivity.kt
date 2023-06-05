@@ -11,8 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import com.github.kanda.fonts.compose.Font
+import com.github.kanda.fonts.compose.Caligrafia
 import com.github.kanda.fonts.sample.ui.theme.FontsTheme
 import kotlinx.coroutines.launch
 
@@ -20,10 +21,14 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val context = LocalContext.current
+
             val scope = rememberCoroutineScope()
             LaunchedEffect(key1 = Unit) {
                 scope.launch {
-                    Font.init(BuildConfig.WEB_KEY_TOKEN)
+                    Caligrafia
+                        .getInstance(context)
+                        .init(BuildConfig.WEB_KEY_TOKEN)
                 }
             }
             FontsTheme {

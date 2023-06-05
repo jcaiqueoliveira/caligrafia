@@ -13,6 +13,6 @@ class CommonGreetingTest {
 
     @Test
     fun testExample2() = runBlocking {
-        Font.init("AIzaSyBPVKAyPVja9SvXcen4CvPrlq-CnCZ_Fwk")
+        CaligrafiaInternals.init("AIzaSyBPVKAyPVja9SvXcen4CvPrlq-CnCZ_Fwk")
     }
 }
