@@ -36,6 +36,7 @@ kotlin {
                 implementation(libs.bundles.networking)
                 implementation(compose.runtime)
                 implementation(compose.foundation)
+                implementation(libs.okio)
             }
         }
 

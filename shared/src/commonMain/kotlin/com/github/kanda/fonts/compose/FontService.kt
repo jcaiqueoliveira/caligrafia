@@ -1,7 +1,5 @@
 package com.github.kanda.fonts.compose
 
-import io.github.xxfast.kstore.KStore
-import io.github.xxfast.kstore.file.extensions.storeOf
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -9,9 +7,6 @@ import io.ktor.http.set
 import kotlinx.serialization.Serializable
 
 internal class FontService(private val client: HttpClient = getKtorClient()) {
-
-    private val store: KStore<FontCache> =
-        storeOf(filePath = "${CaligrafiaInternals.directory}/my-awesome-font.ttf", 0)
 
     suspend fun listAllFonts(key: String): List<WebFont> {
         val response = client.get("webfonts?key=$key").body<WebFontRaw>()
@@ -22,10 +17,10 @@ internal class FontService(private val client: HttpClient = getKtorClient()) {
         val body = client.get {
             url { set(fileUrl) }
         }.body<ByteArray>()
-        val font = FontCache(body)
-        store.set(font)
+        saveFontFile(byteArray = body, "currentfont.ttf")
     }
 }
+
 @Serializable
 internal data class WebFont(
     val family: String,

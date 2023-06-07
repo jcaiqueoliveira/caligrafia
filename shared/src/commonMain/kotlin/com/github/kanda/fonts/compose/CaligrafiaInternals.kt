@@ -5,7 +5,8 @@ import kotlin.native.concurrent.ThreadLocal
 @ThreadLocal
 internal object CaligrafiaInternals {
 
-    var directory: String = ""
+    @PublishedApi
+    internal var directory: String = ""
     suspend fun init(
         key: String,
         vararg fonts: String
