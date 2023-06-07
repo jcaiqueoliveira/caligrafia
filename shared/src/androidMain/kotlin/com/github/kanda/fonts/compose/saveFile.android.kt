@@ -9,10 +9,10 @@ import java.io.File
 
 actual fun saveFontFile(byteArray: ByteArray, fileName: String) {
     val file = File(CaligrafiaInternals.directory, fileName)
-    if (file.exists().not()) {
-        file.sink().buffer().use { sink ->
-            sink.write(byteArray)
-        }
+
+    file.deleteOnExit()
+    file.sink().buffer().use { sink ->
+        sink.write(byteArray)
     }
 }
 

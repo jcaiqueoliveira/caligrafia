@@ -2,8 +2,13 @@ package com.github.kanda.fonts.compose
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.HttpResponseValidator
+import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.isSuccess
 import io.ktor.http.set
+import io.ktor.http.takeFrom
 import kotlinx.serialization.Serializable
 
 internal class FontService(private val client: HttpClient = getKtorClient()) {
@@ -14,10 +19,21 @@ internal class FontService(private val client: HttpClient = getKtorClient()) {
     }
 
     suspend fun download(fileUrl: String, fontName: String, type: String) {
-        val body = client.get {
-            url { set(fileUrl) }
-        }.body<ByteArray>()
-        saveFontFile(byteArray = body, "currentfont.ttf")
+        val client1 = HttpClient {
+            defaultRequest {
+                url(fileUrl)
+            }
+            HttpResponseValidator {
+                validateResponse { response: HttpResponse ->
+                    require(response.status.isSuccess()) {
+                        "HTTP request failed with status code ${response.status.value}"
+                    }
+                }
+            }
+        }
+        val response = client1.get(fileUrl).body<ByteArray>()
+
+        saveFontFile(byteArray = response, "currentfont.ttf")
     }
 }
 

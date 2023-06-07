@@ -37,6 +37,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(compose.foundation)
                 implementation(libs.okio)
+                implementation(libs.ktor.logging)
             }
         }
 
